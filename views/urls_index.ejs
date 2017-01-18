@@ -6,8 +6,15 @@
 
   <body>
     <header>
-      <% include ../partials/header %>
+      <% include ../views/partials/_header %>
     </header>
-    
+
+   <ul>
+      <% for(var i in urls) { %>
+    <li>Shortened URLs: <%= i %> - <%= urls[i] %></li>
+      <% } %>
+      <li>Add New URL</li>
+   </ul>
+
   </body>
 </html>
