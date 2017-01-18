@@ -4,7 +4,7 @@
     <title>Show</title>
   </head>
 
-  <body>
+  <body style="font-size:20px; padding:50px;">
     <header>
       <% include ../views/partials/_header %>
     </header>
@@ -13,6 +13,12 @@
       <li><%= shortURL %></li>
       <li><%= longURL %></li>
     </ul>
+
+    <form action="/urls/<%= shortURL %>/update" method="POST" style="margin:150px;">
+      <label for="newLongURL">Edit</label>
+        <input id="newLongURL" type="text" name="newLongURL" placeholder="<%= longURL %>" style="width: 300px">
+      <input type="submit" value="Edit">
+    </form>
 
   </body>
 </html>

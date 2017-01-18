@@ -4,16 +4,26 @@
     <title>TinyApp</title>
   </head>
 
-  <body>
-    <header>
+  <body style="font-size:20px; padding:50px;">
+    <header >
       <% include ../views/partials/_header %>
     </header>
 
    <ul>
       <% for(var i in urls) { %>
-    <li>Shortened URLs: <%= i %> - <%= urls[i] %></li>
+        <li><%= i %> - <%= urls[i] %>
+            <button>
+              <a href="/urls/<%= i %>">Edit</a>     
+            </button>
+          <form method="POST" action="/urls/<%= i %>/delete">
+            <button type="submit">Delete</button>
+          </form>
+        </li>
       <% } %>
-      <li>Add New URL</li>
+
+      <li>
+        <a href="/urls/new">Add New URL</a>
+      </li>
    </ul>
 
   </body>
