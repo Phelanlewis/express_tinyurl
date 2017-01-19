@@ -10,9 +10,6 @@ const urlDatabase = {
 };
 
 
-const username = {
-
-};
 
 function generateRandomString() {
   let random = Math.random().toString(36).substring(5, 11);
@@ -31,15 +28,15 @@ app.get("/urls/new", (req, res) => {
 
 //Login Users
 app.post("/urls/login", (req, res) => {
-  let username = req.body.username
-  res.cookie("username", username)
-  res.redirect(302,"http://localhost:8080/urls/");
+  let username = req.body.username;
+  res.cookie("username", username);
+  res.redirect(302,"/urls");
 });
 
 //Deletes the url id
 app.post("/urls/:id/delete", (req, res) => {
   delete urlDatabase[req.params.id];
-  res.redirect(302, "/urls/");
+  res.redirect(302, "/urls");
 });
 
 //Updates the urls
@@ -48,7 +45,7 @@ app.post("/urls/:id/update", (req, res) => {
   console.log(newLongURL);
   urlDatabase[req.params.id] = newLongURL;
   console.log(urlDatabase);
-  res.redirect(302, "/urls/");
+  res.redirect(302, "/urls");
 });
 
 //Posts new urls
@@ -61,18 +58,24 @@ app.post("/urls", (req, res) => {
       console.log(urlDatabase);
       console.log('Cookies: ', req.cookies);
       console.log('Signed Cookies: ', req.signedCookies);
-  res.redirect(302, "/urls/");
+  res.redirect(302, "/urls");
 });
 
 //Index for the app
 app.get("/urls", (req, res) => {
-  let templateVars = {  username: req.cookies["username"], urls: urlDatabase };
+  let templateVars = {
+    username: req.cookies["username"],
+    urls: urlDatabase
+  };
   res.render("urls_index", templateVars);
 });
 
 //Shows specific url page
 app.get("/urls/:id", (req, res) => {
-  let templateVars = { shortURL: req.params.id, longURL: urlDatabase[req.params.id] };
+  let templateVars = {
+    shortURL: req.params.id,
+    longURL: urlDatabase[req.params.id]
+  };
   res.render("urls_show", templateVars);
 });
 
@@ -84,6 +87,16 @@ app.get("/u/:shortURL", (req, res) => {
  } else {
    res.end("ERROR");
  }
+});
+
+//Registration page
+app.get("/register", (req, res) => {
+  res.render("register");
+});
+
+//register email and password
+app.post("/register", (req, res) => {
+
 });
 
 app.listen(PORT, () => {
