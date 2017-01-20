@@ -3,18 +3,19 @@
 <nav class="navbar navbar-default" role="navigation">
     <div class="container-fluid" style="background-color:light-grey">
       TinyURL App
+        <DIV>
           <a href="/urls">Home</a>
           <a href="/urls/new">Add New</a>
-
-          <% if (username == undefined) { %>
-
-              <form action="/urls/login" method="POST">
-                <input id="login" type="text" name="username" placeholder="please signin" style="width: 100px">
-                <input type="submit" value="Sign In Motherfucker!!!">
-              </form>
-
-          <% } else { %>
-            Hello <%= username %>
+          <a href="/register">Sign Up</a>
+          <form action="/logout" method="POST">
+            <input id="logout" type="submit" value="Log Out">
+          </form>
+          <% var user = users[user_id]; %>
+          <% if (user) { %>
+            <%= user.email  %>
+            <% } else { %>
+            <a href="/login">Login</a>
           <% } %>
+        </div>
     </div>
 </nav>
