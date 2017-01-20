@@ -62,7 +62,11 @@ app.post("/login", (req, res) => {
 
 //Display the newly added URL on their own page
 app.get("/urls/new", (req, res) => {
-  res.render("urls_new");
+  if (req.cookies["user_id"]) {
+  res.render("urls_new")
+} else {
+  res.redirect("/urls");
+  };
 });
 
 // This the "/" redirects to login
@@ -70,9 +74,11 @@ app.get("/", (req, res) => {
   res.redirect(302, "/login")
 })
 
+//To logout page
 app.post("logout", (res, req) => {
   res.clearCookie("user_id")
 })
+
 //Deletes the url id
 app.post("/urls/:id/delete", (req, res) => {
   delete urlDatabase[req.params.id];
@@ -90,10 +96,12 @@ app.post("/urls/:id/update", (req, res) => {
 
 //Posts new urls
 app.post("/urls", (req, res) => {
+  let user_id = req.cookies["user_id"];
   let longURL = req.body["longURL"];
   let shortURL = generateRandomString();
       console.log(longURL);
       console.log(shortURL);
+  shortURL[user_id] = { user_id };
   urlDatabase[shortURL] = longURL;
       console.log(urlDatabase);
   res.redirect(302, "/urls");
