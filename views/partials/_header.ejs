@@ -5,9 +5,12 @@
       TinyURL App
           <a href="/urls">Home</a>
           <a href="/urls/new">Add New</a>
+          <form action="logout" method="POST">
+            <input type="submit" value="Logout">
+          </form>
           <form action="/urls/login" method="POST">
             <input id="login" type="text" name="username" placeholder="please signin" style="width: 100px">
-            <input type="submit" value="Sign In Motherfucker!!!">
+            <input type="submit" value="Sign In">
           </form>
     </div>
 </nav>

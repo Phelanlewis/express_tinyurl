@@ -36,6 +36,9 @@ app.post("/urls/login", (req, res) => {
   res.redirect(302,"http://localhost:8080/urls/");
 });
 
+app.post("logout", (res, req) => {
+  res.clearCookie("user_id")
+})
 //Deletes the url id
 app.post("/urls/:id/delete", (req, res) => {
   delete urlDatabase[req.params.id];
