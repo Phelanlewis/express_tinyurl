@@ -1,16 +1,18 @@
-<header>
-  <h1>TinyApp</h1>
+<nav class="navbar navbar-default" style="padding: 20px">
+
+<ul class="nav nav-pills">
+  <li role="presentation"><h1>TinyApp</h1></li>
   <% if (user) { %>
-    <p>Signed in as <%= user.email %></p>
+    <li role="presentation">Signed in as <%= user.email %></li>
+  <li role="presentation" class="active">
     <form action="/logout" method="post">
-      <button>Sign Out</button>
+    <button>Sign Out</button>
     </form>
+  </li>
   <% } else { %>
-    <p>
-      <a href="/register">Register</a>
-    </p>
-    <p>
-      <a href="/login">Sign In</a>
-    </p>
+  <li role="presentation"><a href="/register">Register</a></li>
+  <li role="presentation"><a href="/login">Sign In</a></li>
   <% } %>
-</header>
+</ul>
+
+</nav>
