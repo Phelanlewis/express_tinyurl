@@ -5,8 +5,7 @@ const app = express();
 const PORT = process.env.PORT || 8080; // default port 8080
 
 const urlDatabase = {
-  "b2xVn2": "http://www.lighthouselabs.ca",
-  "9sm5xK": "http://www.google.com"
+
 };
 
 const usersDatabase = {
@@ -21,11 +20,6 @@ function generateRandomString() {
 app.set("view engine", "ejs");
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({extended: true}));
-app.use(function(req, res, next){
-  res.locals.users = req.cookies.usersDatabase;
-  res.locals.user_id = usersDatabase[req.cookies.user_id]
-  next();
-});
 
 function authenticate(email, password) {
   for (let user_id in usersDatabase) {
@@ -48,14 +42,13 @@ function authenticate(email, password) {
 app.post("/login", (req, res) => {
   let email = req.body.email;
   let password = req.body.password;
-
   let user_id = authenticate(email, password);
 
   if (user_id) {
     res.cookie("user_id", user_id);
-    res.redirect("/");
+    res.redirect("/urls");
   } else {
-    res.send(403, "<html><body>Wrong email or password</body></html>\n");
+    res.send(403, "<html><h1>Wrong email or password</h1></html>\n");
     res.end();
   }
 });
@@ -95,7 +88,7 @@ app.post("/urls/:id/update", (req, res) => {
 });
 
 //Posts new urls
-app.post("/urls", (req, res) => {
+app.post("/urls/create", (req, res) => {
   let user_id = req.cookies["user_id"];
   let longURL = req.body["longURL"];
   let shortURL = generateRandomString();
@@ -107,8 +100,12 @@ app.post("/urls", (req, res) => {
   res.redirect(302, "/urls");
 });
 
+urlDatabase[shortURL] = {
+user_id: req.session.id}
+
 //Index for the app
 app.get("/urls", (req, res) => {
+
   let templateVars = {
     user_id: req.cookies["user_id"],
     users: usersDatabase,
@@ -121,17 +118,21 @@ app.get("/urls", (req, res) => {
 app.post("/logout", (req, res) => {
   console.log(res.cookie);
   res.clearCookie("user_id");
-  res.redirect(302, "/urls");
+  res.redirect(302, "/");
 })
 
 //Shows specific url page
 app.get("/urls/:id", (req, res) => {
-  let templateVars = {
-    username: req.cookies["user_id"],
-    shortURL: req.params.id,
-    longURL: urlDatabase[req.params.id]
-  };
-  res.render("urls_show", templateVars);
+  if (!req.cookies["user_id"]) {
+    res.redirect(302, "/")
+  } else {
+    let templateVars = {
+      user_id: req.cookies["user_id"],
+      shortURL: req.params.id,
+      longURL: urlDatabase[req.params.id]
+    };
+    res.render("urls_show", templateVars);
+  }
 });
 
 //Some sort of redirect
@@ -164,12 +165,12 @@ app.post("/register", (req, res) => {
     let user = usersDatabase[user_id];
 
     if (email === user.email && password === user.password) {  // JH sez maybe small bug here
-      res.send(404, "<html><body>Wrong email or password</body></html>\n");
+      res.status(404).send("<html><body>Wrong email or password</body></html>\n");
       res.end();
     }
   }
   if (email === '' && password === ''){ // JH sez maybe small bug here
-    res.send(404, "<html><body>Wrong email or password</body></html>\n");
+    res.status(404).send("<html><body>Wrong email or password</body></html>\n");
     res.end();
   } else {
     //creates the object

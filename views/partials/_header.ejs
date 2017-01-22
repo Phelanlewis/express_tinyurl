@@ -1,21 +1,16 @@
-<!-- views/partials/header.ejs -->
-
-<nav class="navbar navbar-default" role="navigation">
-    <div class="container-fluid" style="background-color:light-grey">
-      TinyURL App
-        <DIV>
-          <a href="/urls">Home</a>
-          <a href="/urls/new">Add New</a>
-          <a href="/register">Sign Up</a>
-          <form action="/logout" method="POST">
-            <input id="logout" type="submit" value="Log Out">
-          </form>
-          <% var user = users[user_id]; %>
-          <% if (user) { %>
-            <%= user.email  %>
-            <% } else { %>
-            <a href="/login">Login</a>
-          <% } %>
-        </div>
-    </div>
-</nav>
+<header>
+  <h1>TinyApp</h1>
+  <% if (user) { %>
+    <p>Signed in as <%= user.email %></p>
+    <form action="/logout" method="post">
+      <button>Sign Out</button>
+    </form>
+  <% } else { %>
+    <p>
+      <a href="/register">Register</a>
+    </p>
+    <p>
+      <a href="/login">Sign In</a>
+    </p>
+  <% } %>
+</header>

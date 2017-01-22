@@ -1,24 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Show</title>
+    <title>TinyApp</title>
   </head>
 
-  <body style="font-size:20px; padding:50px;">
-    <header>
-      <% include ../views/partials/_header %>
-    </header>
-
-    <ul>
-      <li><%= shortURL %></li>
-      <li><%= longURL %></li>
-    </ul>
-
-    <form action="/urls/<%= shortURL %>/update" method="POST" style="margin:150px;">
-      <label for="newLongURL">Edit</label>
-        <input id="newLongURL" type="text" name="newLongURL" placeholder="<%= longURL %>" style="width: 300px">
-      <input type="submit" value="Edit">
+  <body>
+    <% include partials/_header %>
+    <h1>ShortURL: <%= shortURL %></h1>
+    <form action="/urls/<%= shortURL %>" method="post">
+      <input name="longURL" value="<%= longURL %>">
+      <button>Update</button>
     </form>
-
   </body>
+
 </html>
