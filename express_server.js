@@ -118,7 +118,11 @@ app.get("/urls/:id", (req, res) => {
     shortURL: req.params.id,
     longURL: urlDatabase[req.params.id].longURL
   };
+  if(!req.body["longURL"]){
+    res.status(404).send('NO DICE!!! Try again');
+  } else {
   res.render("urls_show", templateVars);
+  }
 });
 
 //updates specific url
