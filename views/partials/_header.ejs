@@ -1,6 +1,6 @@
 <header>
   <h1>TinyApp</h1>
-  <% if (user) { %>
+  <% if (user !== undefined) { %>
     <p>Signed in as <%= user.email %></p>
     <form action="/logout" method="post">
       <button>Sign Out</button>

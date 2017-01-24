@@ -12,7 +12,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 //adds cookie session
 const cookieSession = require('cookie-session');
 app.use(cookieSession({
-  keys: ['Lighthosue Labs']
+  keys: ['Lighthouse Labs']
 }));
 
 app.use((req, res, next) => {
@@ -42,36 +42,12 @@ app.use('/urls/:id/:action?', (req, res, next) => {
 
 //random number generator function
 function generateRandomString() {
-  let random = Math.random().toString(36).substring(5, 13);
-  return random;
+  Math.random().toString(36).substring(5, 13);
 }
 
 // User and urls database
-const urlDatabase = {
-  "b2xVn2": {
-    shortURL: "b2xVn2",
-    longURL: "http://www.lighthouselabs.ca",
-    user_id: 'QfoGLg'
-  },
-  "9sm5xK": {
-    shortURL: "9sm5xK",
-    longURL: "http://www.google.com",
-    user_id: 'x8jkO2'
-  }
-};
-
-const users = {
-  'QfoGLg': {
-    id: 'QfoGLg',
-    email: 'test',
-    password: '$2a$10$i77P2MyaR/qlLUsowSs5Y.xb14CppHGiwuIeVukX63uS58Re0bp7K'
-  },
-  'x8jkO2': {
-    id: 'x8jkO2',
-    email: 'asdf',
-    password: '$2a$10$a4vHkqNiFxJjPasbjgk1PukOEiV6KH0Exydl9FFnGTSsynR90lkAe'
-  }
-};
+const urlDatabase = {};
+const users = {};
 
 //get the index while logged in
 app.get("/urls", (req, res) => {
@@ -118,9 +94,10 @@ app.get("/urls/:id", (req, res) => {
     shortURL: req.params.id,
     longURL: urlDatabase[req.params.id].longURL
   };
-  if(!req.body["longURL"]){
-    res.status(404).send('NO DICE!!! Try again');
-  } else {
+  for (let shortURL in urlDatabase){
+  if(req.body["shortURL"] === urlDatabase[shortURL]){
+    res.status(400).send('NO DICE!!! Try again');
+    }
   res.render("urls_show", templateVars);
   }
 });
@@ -128,7 +105,7 @@ app.get("/urls/:id", (req, res) => {
 //updates specific url
 app.post('/urls/:id', (req, res) => {
   if(!req.body["longURL"]){
-    res.redirect('/urls/:id');
+    res.redirect('/urls/' + req.params.id);
   } else {
   urlDatabase[req.params.id].longURL = req.body["longURL"];
   res.redirect('/urls');

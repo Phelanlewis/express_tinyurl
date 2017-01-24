@@ -12,9 +12,9 @@
       <% for (let shortURL in urls) { %>
         <li>
           <%= shortURL %> ---> <%= urls[shortURL].longURL %>
-          <a href="/urls/<%= shortURL %>">Edit</a>
           <form method="POST" action="/urls/<%= shortURL %>/delete">
-            <button>Delete</button>
+            <a href="/urls/<%= shortURL %>">Edit</a>
+            <input type="submit" value="Delete">
           </form>
         </li>
       <% } %>
