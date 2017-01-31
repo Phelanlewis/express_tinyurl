@@ -42,7 +42,8 @@ app.use('/urls/:id/:action?', (req, res, next) => {
 
 //random number generator function
 function generateRandomString() {
-  Math.random().toString(36).substring(5, 13);
+ let random = Math.random().toString(36).substring(5, 13);
+ return random;
 }
 
 // User and urls database
@@ -65,7 +66,8 @@ app.get("/urls", (req, res) => {
 
 // This the "/" redirects to login
 app.get("/", (req, res) => {
-  if (req.session.user_id) {
+  if (req.session.user_id){
+    console.log(req.session.user_id);
     res.redirect(302, "/urls")
   } else {
   res.redirect(302, "/login")
@@ -96,10 +98,10 @@ app.get("/urls/:id", (req, res) => {
   };
   for (let shortURL in urlDatabase){
   if(req.body["shortURL"] === urlDatabase[shortURL]){
+    res.render("urls_show", templateVars);
+    } else {
     res.status(400).send('NO DICE!!! Try again');
-    }
-  res.render("urls_show", templateVars);
-  }
+}
 });
 
 //updates specific url
@@ -170,6 +172,7 @@ app.post('/register', (req, res) => {
     return;
     }
   }
+
   const userId = generateRandomString();
   users[userId] = {
     id: userId,
